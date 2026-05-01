@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: "Diffusion of AI Coding Assistants Among Active Scientists: Evidence from Claude Code"
+message: "If you use this code or data, please cite the accompanying paper."
+type: software
+authors:
+  - family-names: Yang
+    given-names: Charles
+    email: charlesxjyang@gmail.com
+repository-code: "https://github.com/charlesxjyang/claude-code-scientists"
+license: MIT
+abstract: >
+  Replication code and data for measuring Claude Code (LLM coding assistant)
+  adoption among active ORCID-linked scientists, using the public
+  Co-Authored-By commit trailer signal between October 2025 and February 2026.
+keywords:
+  - artificial intelligence
+  - diffusion of innovation
+  - bibliometrics
+  - scientific labor
+  - large language models
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Yang
+      given-names: Charles
+  title: "Diffusion of AI Coding Assistants Among Active Scientists: Evidence from Claude Code"
+  year: 2026
+  journal: "Economics Letters (under review)"

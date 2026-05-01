@@ -31,7 +31,7 @@ TOKEN_FILE = os.path.join(SCRIPT_DIR, ".github_token")
 API_URL = "https://api.github.com/search/commits"
 SEARCH_QUERY = '"Co-Authored-By: Claude" "noreply@anthropic.com"'
 PER_PAGE = 100
-RATE_LIMIT_DELAY = 2.1  # ~28 req/min, under GitHub's 30/min cap
+RATE_LIMIT_DELAY = 0.3  # Aggressive; GitHub search cap is 30/min — rely on 403 backoff if we overshoot
 
 # Adaptive window subdivision steps (in minutes)
 WINDOW_LEVELS = [

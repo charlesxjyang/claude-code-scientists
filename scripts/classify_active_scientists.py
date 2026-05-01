@@ -30,10 +30,21 @@ TITLES_FILE = os.path.join(SCRIPT_DIR, "scopus_titles.tsv")
 SUBJECT_AREAS_FILE = os.path.join(SCRIPT_DIR, "scopus_subject_areas.tsv")
 ASJC_CODES_FILE = os.path.join(SCRIPT_DIR, "asjc_codes.csv")
 
-# ORCID Auth
+# ORCID Auth — credentials read from environment.
+#   Register an ORCID public API client at https://orcid.org/developer-tools
+#   and set ORCID_CLIENT_ID + ORCID_CLIENT_SECRET in your shell.
+ORCID_CLIENT_ID = os.environ.get("ORCID_CLIENT_ID")
+ORCID_CLIENT_SECRET = os.environ.get("ORCID_CLIENT_SECRET")
+if not (ORCID_CLIENT_ID and ORCID_CLIENT_SECRET):
+    sys.stderr.write(
+        "ERROR: set ORCID_CLIENT_ID and ORCID_CLIENT_SECRET in your environment.\n"
+        "  Register a client at https://orcid.org/developer-tools (free).\n"
+    )
+    sys.exit(1)
+
 token_r = requests.post("https://orcid.org/oauth/token", data={
-    "client_id": "APP-LY6BGRCJCDBGO0YL",
-    "client_secret": "***REVOKED-SECRET***",
+    "client_id": ORCID_CLIENT_ID,
+    "client_secret": ORCID_CLIENT_SECRET,
     "scope": "/read-public", "grant_type": "client_credentials",
 }, headers={"Accept": "application/json"})
 TOKEN = token_r.json()["access_token"]

@@ -42,8 +42,11 @@ GITHUB_HEADERS = {
 ORCID_API = "https://pub.orcid.org/v3.0"
 HEADERS_ORCID = {"Accept": "application/json"}
 
-ORCID_CLIENT_ID = "APP-LY6BGRCJCDBGO0YL"
-ORCID_CLIENT_SECRET = "***REVOKED-SECRET***"
+ORCID_CLIENT_ID = os.environ.get("ORCID_CLIENT_ID")
+ORCID_CLIENT_SECRET = os.environ.get("ORCID_CLIENT_SECRET")
+if not (ORCID_CLIENT_ID and ORCID_CLIENT_SECRET):
+    sys.stderr.write("ERROR: set ORCID_CLIENT_ID + ORCID_CLIENT_SECRET (https://orcid.org/developer-tools)\n")
+    sys.exit(1)
 
 SESSION_ORCID = requests.Session()
 SESSION_ORCID.headers.update(HEADERS_ORCID)

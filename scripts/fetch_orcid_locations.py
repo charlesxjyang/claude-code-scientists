@@ -23,9 +23,16 @@ ORCID_USERS_FILE = os.path.join(SCRIPT_DIR, "orcid_github_users.json")
 LOCATION_CACHE = os.path.join(SCRIPT_DIR, "orcid_locations.json")
 
 # ORCID Auth
+ORCID_CLIENT_ID = os.environ.get("ORCID_CLIENT_ID")
+ORCID_CLIENT_SECRET = os.environ.get("ORCID_CLIENT_SECRET")
+if not (ORCID_CLIENT_ID and ORCID_CLIENT_SECRET):
+    sys.stderr.write("ERROR: set ORCID_CLIENT_ID + ORCID_CLIENT_SECRET (https://orcid.org/developer-tools)
+")
+    sys.exit(1)
+
 token_r = requests.post("https://orcid.org/oauth/token", data={
-    "client_id": "APP-LY6BGRCJCDBGO0YL",
-    "client_secret": "***REVOKED-SECRET***",
+    "client_id": ORCID_CLIENT_ID,
+    "client_secret": ORCID_CLIENT_SECRET,
     "scope": "/read-public", "grant_type": "client_credentials",
 }, headers={"Accept": "application/json"})
 TOKEN = token_r.json()["access_token"]

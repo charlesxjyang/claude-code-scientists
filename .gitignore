@@ -1,5 +1,37 @@
+# Python
 __pycache__/
 *.pyc
-.DS_Store
+*.pyo
+*.tmp.json
+*.json.tmp
+
+# Virtual env
 venv/
+.venv/
 .env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Credentials & secrets — never commit these
+*.github_token
+.github_token
+.orcid_creds
+secrets.env
+
+# Drafts (kept locally, not in repo per author preference)
+draft.md
+paper.md
+*.pdf
+
+# Run-time artifacts
+/tmp/
+*.log
+
+# Claude Code local state
+.claude/

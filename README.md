@@ -1,51 +1,123 @@
-# How Many Scientists Use Claude Code?
+# Diffusion of AI Coding Assistants Among Active Scientists: Evidence from Claude Code
 
-Analysis of Claude Code adoption among ORCID-linked scientists on GitHub.
+Replication code and data for the working paper documenting Claude Code
+adoption among ORCID-linked active scientists, October 2025 – February 2026.
 
-## Method
+By exploiting Claude Code's default `Co-Authored-By: Claude` commit trailer,
+we measure individual-level LLM coding-tool adoption directly from public
+GitHub commit metadata, without relying on stylometric inference or
+self-report.
 
-1. Scraped all public GitHub commits with `Co-Authored-By: Claude` signatures (~8M+ commits)
-2. Cross-referenced commit authors against ORCID profiles linked to GitHub accounts
-3. Filtered to active scientists: recently active on GitHub, ORCID profile linked, published since 2024
-4. Classified scientists by field (Scopus journal lookup + keyword fallback), seniority (years since first publication), country, and institution
+## Headline numbers (Oct 14 2025 – Feb 28 2026)
 
-## Dataset
+| Quantity                                    | Value      |
+| ------------------------------------------- | ---------- |
+| Claude Code commits on public GitHub        | 9,998,527  |
+| Active ORCID-linked scientists in cohort    | 16,010     |
+| Cohort adoption rate                        | 2.07%      |
+| ORCID adoption among active researchers     | 55.6%      |
+| GitHub-link rate among ORCID'd researchers  | 0.188%     |
+| Implied population-corrected adoption rate  | ~30 / Mn   |
 
-- **15,934** active ORCID-linked scientists on GitHub
-- **331** (2.1%) have made at least one Claude Code commit
-- Data period: October 2025 - February 2026
+Adopters have a 3.1-year longer median GitHub history than non-adopters
+within field (Mann-Whitney p = 2 × 10⁻²⁷); they do not differ on citation
+impact.
 
-## Figures
+## Directory layout
 
-| Figure | Description |
-|--------|-------------|
-| `fig_adoption_rate` | Cumulative % of scientists adopting Claude Code over time |
-| `fig_seniority` | Adoption rate by career stage (early career to veteran) |
-| `fig_seniority_violin` | Commit intensity and repo breadth by seniority (violin + box) |
-| `fig_scientist_profile` | 3-panel: commits/week, languages, repo breadth (scientists vs all) |
-| `fig_timeline` | Weekly commits: all users vs scientists (log scale) |
-| `fig_field_adoption` | Adoption rate by scientific field |
-| `fig_institution` | Adoption rate by institution (histogram + top/bottom lists) |
-| `fig_country` | Adoption rate by country (histogram + top/bottom lists) |
-
-## Regenerating figures
-
-```bash
-pip install matplotlib numpy scipy
-python figure_template.py
+```
+.
+├── fig1_diffusion.py          Figure 1: cumulative adoption + weekly all-vs-sci
+├── fig2_career.py             Figure 2: adoption + intensity by career stage
+├── fig3_field.py              Figure 3: field rate, ORCID baseline, corrected rate
+├── fig4_geography.py          Figure 4: country and institution heterogeneity
+├── fig5_experience.py         Figure 5: time-on-GitHub by adopter status
+├── figS1_impact.py            Online appendix: citation impact by adoption
+├── figure_template.py         Shared style helpers (palette, fonts, save())
+├── figures/                   Generated SVG + PNG outputs (LFS-tracked)
+├── scripts/                   Data-collection pipeline (see run_pipeline.sh)
+│   ├── find_claude_commits.py
+│   ├── analyze_users.py
+│   ├── find_orcid_users_api.py
+│   ├── fetch_orcid_profiles.py
+│   ├── fetch_orcid_locations.py
+│   ├── classify_orcid_scopus.py
+│   ├── classify_active_scientists.py
+│   ├── fetch_openalex_author_baseline.py
+│   ├── fetch_orcid_github_baseline.py
+│   ├── fetch_scientist_citations.py
+│   └── fetch_scientist_github_accounts.py
+├── data/                      All checkpointed data (LFS-tracked)
+├── run_pipeline.sh            End-to-end re-run
+├── requirements.txt
+├── LICENSE                    MIT (code), CC-BY-4.0 (data + figures)
+└── CITATION.cff
 ```
 
-## Key findings
+## Setup
 
-- ~2.1% of active ORCID scientists on GitHub have used Claude Code (as of Feb 2026)
-- Adoption is remarkably uniform across scientific fields (1.4-3.4%)
-- Veterans (20+ years since first publication) adopt at higher rates (3.2%) than postdocs (1.3%)
-- Once adopted, commit intensity is similar across seniority levels (~7-12 commits/week median)
-- Geographic variation: Sweden (4.4%), US (4.0%), Finland (4.0%) lead; India (0.3%), Bangladesh (0.0%) trail
-- Scientists use more Python (~40%) and R (~6%) vs non-scientists; less TypeScript
+```bash
+# 1. Clone with LFS (required — most data files are stored via Git LFS)
+git lfs install
+git clone https://github.com/charlesxjyang/claude-code-scientists.git
+cd claude-code-scientists
+
+# 2. Python deps
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Reproducing the figures only
+
+If you trust the checkpointed data in `data/` (this is the version used in
+the paper), just render the figures:
+
+```bash
+./run_pipeline.sh --skip-fetch
+```
+
+### Reproducing the entire pipeline from scratch
+
+You'll need three credentials, all free:
+
+| Variable               | Source                                         |
+| ---------------------- | ---------------------------------------------- |
+| `GITHUB_TOKEN`         | https://github.com/settings/tokens (no scopes) |
+| `ORCID_CLIENT_ID`      | https://orcid.org/developer-tools              |
+| `ORCID_CLIENT_SECRET`  | (same)                                         |
+
+```bash
+export GITHUB_TOKEN=ghp_...
+export ORCID_CLIENT_ID=APP-...
+export ORCID_CLIENT_SECRET=...
+./run_pipeline.sh
+```
+
+Total wall-clock for full re-run: ~1 day, dominated by the GitHub Search API
+rate limits during commit collection.
 
 ## Data sources
 
-- [GitHub Search API](https://docs.github.com/en/rest/search) — Claude Code commits
-- [ORCID Public API](https://info.orcid.org/documentation/api-tutorials/) — scientist profiles, publications, affiliations
-- [Scopus](https://www.scopus.com/) — journal-to-field classification
+| Source                                                        | License        | Used for                                  |
+| ------------------------------------------------------------- | -------------- | ----------------------------------------- |
+| GitHub Search Commits API                                     | TOS            | Claude Code commit detection              |
+| GitHub Users / Repos API                                      | TOS            | account creation, profile data            |
+| ORCID public registry + API                                   | CC0            | researcher → GitHub link                  |
+| OpenAlex                                                      | CC0            | active-author + ORCID-rate baselines      |
+| Scopus journal-to-ASJC mapping (via Elsevier journal lookup)  | Elsevier terms | field classification                      |
+
+## Citation
+
+If you use this code or data, please cite:
+
+> Yang, C. (2026). *Diffusion of AI Coding Assistants Among Active Scientists:
+> Evidence from Claude Code.* Economics Letters (under review).
+
+A machine-readable citation entry is available in `CITATION.cff`.
+
+## Disclosure
+
+Author affiliated with Renaissance Philanthropy. The author has no financial
+interest in Anthropic or in any of the AI coding tools discussed. Replication
+materials in this repository were authored with substantial assistance from
+Claude Code.
