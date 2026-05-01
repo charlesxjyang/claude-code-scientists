@@ -21,7 +21,8 @@ from figure_template import (
     pct_formatter, k_formatter, save, add_source, add_subtitle, direct_label,
 )
 
-CC_FILE = "/Users/charl/Programming/github_claude/claude_commits_all.json"
+CC_FILE = os.environ.get("CLAUDE_COMMITS_PATH",
+                          os.path.join(DATA_DIR, "claude_commits_all.json"))
 ACTIVE_FILE = os.path.join(DATA_DIR, "active_scientists.json")
 
 DATA_LABEL = "Oct 2025 – Mar 2026"

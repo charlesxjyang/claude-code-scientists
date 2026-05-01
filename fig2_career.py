@@ -23,7 +23,8 @@ from figure_template import (
     pct_formatter, save, add_source, add_subtitle,
 )
 
-CC_FILE = "/Users/charl/Programming/github_claude/claude_commits_all.json"
+CC_FILE = os.environ.get("CLAUDE_COMMITS_PATH",
+                          os.path.join(DATA_DIR, "claude_commits_all.json"))
 ACTIVE_FILE = os.path.join(DATA_DIR, "active_scientists.json")
 
 CURRENT_YEAR = 2026

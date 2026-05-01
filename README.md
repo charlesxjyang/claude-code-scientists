@@ -76,6 +76,20 @@ the paper), just render the figures:
 ./run_pipeline.sh --skip-fetch
 ```
 
+Note: `data/claude_commits_all.json` (the raw commit corpus, ~4.6 GB) is
+**not** included in the LFS-tracked data because it exceeds GitHub's free LFS
+quota. Two ways to obtain it:
+
+1. Run the full pipeline (Stage 1 only, see below) to regenerate it.
+2. Set `CLAUDE_COMMITS_PATH` to point to a copy you already have:
+   ```bash
+   export CLAUDE_COMMITS_PATH=/path/to/claude_commits_all.json
+   ./run_pipeline.sh --skip-fetch
+   ```
+
+Figures 3, 4, 5, S1 do not depend on this file and can be regenerated from
+the LFS-tracked data files alone.
+
 ### Reproducing the entire pipeline from scratch
 
 You'll need three credentials, all free:
