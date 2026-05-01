@@ -24,10 +24,31 @@ Thumbs.db
 .orcid_creds
 secrets.env
 
-# Drafts (kept locally, not in repo per author preference)
+# Paper-submission artifacts (kept local — not in repo per author preference)
 draft.md
 paper.md
+abstract.md
+cover_letter.*
+response_to_reviewers.*
+referee_report*
+revision_notes.*
+supplementary.*
+appendix.*
+*.tex
+*.aux
+*.bbl
+*.blg
+*.bib
+*.toc
+*.out
+*.synctex*
+*.fls
+*.fdb_latexmk
 *.pdf
+*.docx
+*.doc
+submissions/
+revisions/
 
 # Run-time artifacts
 /tmp/
