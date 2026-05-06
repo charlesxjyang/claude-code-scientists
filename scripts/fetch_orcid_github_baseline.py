@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 """
-ORCID → ORCID-with-GitHub baseline.
+DEPRECATED — superseded by parse_orcid_dump.py + aggregate_orcid_dump.py.
+
+This is the API-sample version of the Stage 2 baseline (P(GitHub|ORCID,
+active)). It pulls ~200,000 ORCID records via the public API, sampled
+from OpenAlex 2024+ active authors, and yields ~0.188% global GitHub-
+link rate. The full-dump version (parse_orcid_dump.py) covers all
+2,108,784 active ORCID records and yields 0.367% — about twice the
+API-sample rate, because the API sample is work-weighted (favors
+prolific authors, who maintain GitHub links less often). The full-dump
+baseline is author-weighted by construction and is used as the primary
+estimate in the paper. This script is kept as the legacy comparison
+baseline cited in Appendix A.4.
 
 Input: data/openalex_sampled_orcids.txt (ORCIDs sampled from OpenAlex 2024-2026
 active authors) + data/openalex_sampled_authors.json (country/field per author).

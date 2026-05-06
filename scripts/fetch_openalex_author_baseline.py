@@ -39,7 +39,7 @@ YEARS = "2024-2026"
 
 # OpenAlex sample= does NOT paginate via cursor — each call returns ≤200
 # regardless. So we do many independent sample calls with different seeds.
-N_SAMPLES = 500  # 500 × 200 = 100,000 works, → ~200k unique authors
+N_SAMPLES = 3750  # 3,750 × 200 = 750,000 works, → ~1.5M unique authors (~50× original)
 PER_PAGE = 200
 BASE_SEED = 42
 

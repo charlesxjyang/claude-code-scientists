@@ -34,8 +34,7 @@ ASJC_CODES_FILE = os.path.join(SCRIPT_DIR, "asjc_codes.csv")
 ORCID_CLIENT_ID = os.environ.get("ORCID_CLIENT_ID")
 ORCID_CLIENT_SECRET = os.environ.get("ORCID_CLIENT_SECRET")
 if not (ORCID_CLIENT_ID and ORCID_CLIENT_SECRET):
-    sys.stderr.write("ERROR: set ORCID_CLIENT_ID + ORCID_CLIENT_SECRET (https://orcid.org/developer-tools)
-")
+    sys.stderr.write("ERROR: set ORCID_CLIENT_ID + ORCID_CLIENT_SECRET (https://orcid.org/developer-tools)\n")
     sys.exit(1)
 
 token_r = requests.post("https://orcid.org/oauth/token", data={
